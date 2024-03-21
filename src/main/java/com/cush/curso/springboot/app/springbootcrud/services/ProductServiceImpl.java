@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService{
         // });
         if(productOptional.isPresent()){
             Product productDb = productOptional.orElseThrow();
-
+            productDb.setSku(product.getSku());
             productDb.setName(product.getName());   
             productDb.setDescription(product.getDescription());
             productDb.setPrice(product.getPrice());
@@ -66,6 +66,12 @@ public class ProductServiceImpl implements ProductService{
             productRepository.delete(productDb);
         });
         return productOptional;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsBySku(String sku) {
+        return productRepository.existsBySku(sku);
     }
 
 }
